@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+
+import sys
+import json
+
+from tqdm import tqdm
+
+from putils.strutil import str_join
+
+
+if len(sys.argv) < 2:
+    sys.stderr.write("usage: %s name1 [name2 name3 ...]\n" % sys.argv[0])
+    sys.stderr.write("    name: element to parse.")
+    sys.stderr.write("\n")
+    sys.exit(1)
+
+
+elements = sys.argv[1:]
+for line in tqdm(sys.stdin):
+    obj = json.loads(line)
+    print str_join([obj[en] for en in elements])
