@@ -9,6 +9,15 @@ from tqdm import tqdm
 from putils.strutil import str_join
 
 
+def value_as_str(value):
+    """value값이 str이나 unicode이면 그대로 반환. 다른 object라면 (e.g. dict, etc.) json dumps."""
+
+    if isinstance(value, str) or isinstance(value, unicode):
+        return value
+    else:
+        return json.dumps(value, ensure_ascii=False)
+
+
 if len(sys.argv) < 2:
     sys.stderr.write("usage: %s name1 [name2 name3 ...]\n" % sys.argv[0])
     sys.stderr.write("    name: element to parse.")
@@ -19,4 +28,4 @@ if len(sys.argv) < 2:
 elements = sys.argv[1:]
 for line in tqdm(sys.stdin):
     obj = json.loads(line)
-    print str_join([obj[en] for en in elements])
+    print str_join([value_as_str(obj[en]) for en in elements])
